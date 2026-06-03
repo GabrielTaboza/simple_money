@@ -7,8 +7,8 @@ export async function POST(req) {
     const { message } = await req.json()
 
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
-    })
+  model: 'gemini-2.5-flash',
+})
 
     const result = await model.generateContent(`
 Você é o assistente financeiro do aplicativo SimpleMoney.
@@ -28,11 +28,11 @@ ${message}
     return Response.json({
       answer: result.response.text(),
     })
-  } catch (error) {
-    console.error(error)
+  }catch (error) {
+  console.error('ERRO GEMINI:', error)
 
-    return Response.json({
-      answer: 'Desculpe, ocorreu um erro ao processar sua solicitação.'
-    })
-  }
+  return Response.json({
+    answer: error.message || JSON.stringify(error)
+  })
+}
 }
